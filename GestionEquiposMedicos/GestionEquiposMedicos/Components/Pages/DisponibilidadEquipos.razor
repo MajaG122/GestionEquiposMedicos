@@ -1,0 +1,29 @@
+﻿@page "/disponibilidad"
+@rendermode InteractiveServer
+@inject EquipoService EquipoService
+@inject IEquipoRepository EquipoRepository
+
+<h3>Lista de Equipos</h3>
+
+<ul>
+    @if (equipos == null)
+    {
+        <li>Cargando...</li>
+    }
+    else
+    {
+        @foreach (var equipo in equipos)
+        {
+            <li>@equipo.Nombre - Disponibilidad: @equipo.Disponibilidad</li>
+        }
+    }
+</ul>
+
+@code {
+    private List<Equipo> equipos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        equipos = await EquipoRepository.GetAllAsync();
+    }
+}

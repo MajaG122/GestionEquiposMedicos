@@ -1,0 +1,47 @@
+﻿
+@page "/historial"
+@rendermode InteractiveServer
+@inject AppDbContext DbContext
+@inject ITransaccionRepository TransaccionRepository
+
+<h3>Historial de Transacciones</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Transacción</th>
+            <th>Cliente</th>
+            <th>Equipo</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Estado</th>
+            <th>Costo Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaccion in transacciones)
+        {
+            <tr>
+                <td>@transaccion.TransaccionID</td>
+                <td>@transaccion.Cliente.NombreCliente</td>
+                <td>@transaccion.Equipo.Nombre</td>
+                <td>@transaccion.FechaInicioRenta.ToShortDateString()</td>
+                <td>@transaccion.FechaFinRenta.ToShortDateString()</td>
+                <td>@transaccion.EstadoTransaccion</td>
+                <td>@transaccion.CostoTotal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Transaccion> transacciones;
+
+    protected override async Task OnInitializedAsync()
+    {
+        transacciones = await DbContext.Transacciones
+            .Include(t => t.Cliente)
+            .Include(t => t.Equipo)
+            .ToListAsync();
+    }
+}
