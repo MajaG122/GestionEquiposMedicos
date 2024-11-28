@@ -1,0 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+
+namespace GestionEquiposMedicos.Modelos
+{
+    public class BaseDBContext : DbContext
+    {
+        public BaseDBContext(DbContextOptions<BaseDBContext> options) : base(options)
+        {
+
+        }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Equipo> Equipos { get; set; }
+        public DbSet<Transaccion> Transacciones { get; set; }
+    }
+}
